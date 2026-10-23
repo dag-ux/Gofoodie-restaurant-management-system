@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// 1. USER TABLE (Customers, Admins, Staff)
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  phone        String?
+  role         String        @default("CUSTOMER") // "ADMIN", "STAFF", "CUSTOMER"
+  createdAt    DateTime      @default(now())
+
+  orders       Order[]       // One user can have many orders
+  reservations Reservation[] // One user can make many reservations
+}
+
+// 2. CATEGORY TABLE (e.g., Traditional, Cafe, Breakfast)
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique // e.g., "Breakfast", "Lunch", "Traditional Food", "Drinks"
+  description String?
+  imageUrl    String?    
+  orderIndex  Int        @default(0) 
+
+  menuItems   MenuItem[] 
+}
+
+// 3. MENU ITEM TABLE (The actual food)
+model MenuItem {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  imageUrl    String?
+  isAvailable Boolean    @default(true)
+  
+  categoryId  Int
+  category    Category   @relation(fields: [categoryId], references: [id])
+
+  orderItems  OrderItem[] 
+}
+
+// 4. RESTAURANT TABLE (Physical tables for Dine-in)
+model Table {
+  id           Int           @id @default(autoincrement())
+  tableNumber  String        @unique
+  capacity     Int
+  status       String        @default("FREE") // "FREE", "OCCUPIED", "RESERVED"
+
+  orders       Order[]       
+  reservations Reservation[] 
+}
+
+// 5. ORDER TABLE (The main transaction)
+model Order {
+  id           Int         @id @default(autoincrement())
+  
+  customerName String      
+  phone        String      
+  address      String?     
+  
+  orderType    String      // "DINE_IN", "TAKEOUT", "DELIVERY", "DRIVE_THROUGH"
+  status       String      @default("PENDING") // "PENDING", "PREPARING", "READY", "COMPLETED", "CANCELLED"
+  totalAmount  Float
+  createdAt    DateTime    @default(now())
+
+  // Relationships
+  userId       Int?        
+  user         User?       @relation(fields: [userId], references: [id])
+
+  tableId      Int?        
+  table        Table?      @relation(fields: [tableId], references: [id])
+
+  items        OrderItem[] 
+  payment      Payment?    
+}
+
+// 6. ORDER ITEM TABLE
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  unitPrice  Float    
+
+  orderId    Int
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  menuItemId Int
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+}
+
+// 7. RESERVATION TABLE
+model Reservation {
+  id              Int      @id @default(autoincrement())
+  reservationTime DateTime
+  partySize       Int
+  status          String   @default("CONFIRMED") 
+
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id])
+
+  tableId         Int
+  table           Table    @relation(fields: [tableId], references: [id])
+}
+
+// 8. PAYMENT TABLE
+model Payment {
+  id            Int      @id @default(autoincrement())
+  amount        Float
+  method        String   
+  status        String   @default("PENDING") 
+  transactionId String?  
+  createdAt     DateTime @default(now())
+
+  orderId       Int      @unique 
+  order         Order    @relation(fields: [orderId], references: [id])
+}
