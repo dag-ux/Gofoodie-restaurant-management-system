@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -8,15 +9,15 @@ export default {
     extend: {
       colors: {
         gofoodie: {
-          orange: '#FF6600', // Primary Logo Color
-          yellow: '#FFC107', // Secondary Logo Color
-          dark: '#1F2937',   // For text
-          light: '#FFFDF9',  // Warm background
+          orange: '#FF6600', // Primary Brand Color
+          yellow: '#FFC107', // Secondary Brand Color
+          dark: '#1F2937',   
+          light: '#FAFAFA',  
           white: '#FFFFFF',
         }
       },
       fontFamily: {
-        sans: ['Nunito', 'sans-serif'], // Rounded font to match your logo
+        sans: ['Nunito', 'sans-serif'],
       }
     },
   },

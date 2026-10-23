@@ -5,11 +5,15 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light !important; 
+  color-scheme: light; 
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 body {
   font-family: 'Nunito', sans-serif;
-  background-color: #FAFAFA;
-  color: #1F2937;
+  margin: 0;
+  padding: 0;
 }
