@@ -1,15 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, MapPin, Utensils, Play, Coffee, ArrowRight } from 'lucide-react';
+import { Phone, MapPin, Utensils, Play, Coffee } from 'lucide-react';
 import { getMenuItems } from '../api/menuApi';
 import type { MenuItem } from '../api/menuApi';
-import { useCartStore } from '../store/useCartStore';
 import interiorImg from '../assets/interior design .png'; 
 
 const HomePage = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const addToCart = useCartStore((state) => state.addToCart);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -33,7 +31,6 @@ const HomePage = () => {
       
       {/* HERO SECTION */}
       <header className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-orange-50 via-white to-yellow-50 dark:from-stone-950 dark:via-stone-900 dark:to-black pt-20 pb-12 lg:pb-0">
-        {/* Background Decor */}
         <div className="absolute top-0 left-0 w-72 md:w-96 h-72 md:h-96 bg-gofoodie-orange/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
         <div className="absolute bottom-0 right-0 w-72 md:w-96 h-72 md:h-96 bg-gofoodie-yellow/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
 
@@ -51,9 +48,9 @@ const HomePage = () => {
                   Taste the Joy at
                 </span>
                 <br />
-                <span className="text-gofoodie-orange">Goo</span>
-                <span className="text-gofoodie-yellow">F</span>
-                <span className="text-gofoodie-orange">oodie</span>
+                <span className="text-gofoodie-orange">GoF</span>
+                <span className="text-gofoodie-yellow">oo</span>
+                <span className="text-gofoodie-orange">die</span>
               </h1>
               
               <p className="text-base md:text-lg text-stone-600 dark:text-stone-400 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium">
@@ -111,14 +108,13 @@ const HomePage = () => {
 
             {/* Story Text */}
             <div className="text-center md:text-left mt-8 md:mt-0">
-              {/* MIXED YELLOW AND ORANGE COLORS WITHOUT GRADIENT */}
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-stone-900 dark:text-white mb-6 leading-[1.15]">
                 <span className="text-gofoodie-orange">A Taste of</span> <span className="text-gofoodie-yellow">Tradition</span>, <br className="hidden sm:block"/>
                 <span className="text-gofoodie-orange">Crafted with</span> <span className="text-gofoodie-yellow">Love.</span>
               </h2>
               
               <p className="text-base md:text-lg text-stone-500 dark:text-stone-400 leading-relaxed mb-6">
-                At GooFoodie, we believe that food is more than just a meal—it's an experience. We bring together the rich, authentic flavors of traditional Ethiopian cuisine with the comfort of a modern cafe.
+                At GoFoodie, we believe that food is more than just a meal—it's an experience. We bring together the rich, authentic flavors of traditional Ethiopian cuisine with the comfort of a modern cafe.
               </p>
               <p className="text-base md:text-lg text-stone-500 dark:text-stone-400 leading-relaxed mb-8">
                 Whether you are joining us for a morning macchiato, a business lunch, or a family dinner, our dedicated team is here to ensure every moment is perfect.
@@ -146,17 +142,18 @@ const HomePage = () => {
         <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-gofoodie-yellow/10 rounded-full blur-3xl pointer-events-none"></div>
         
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 md:mb-16 gap-6">
-            <div className="text-center md:text-left">
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-3 md:mb-4 tracking-tight">
-                <span className="bg-gradient-to-r from-gofoodie-orange to-gofoodie-yellow bg-clip-text text-transparent">
-                  Signature Dishes
-                </span>
-              </h2>
-              <p className="text-stone-500 dark:text-stone-400 text-base md:text-lg font-medium">Our most loved meals, crafted to perfection.</p>
-            </div>
+          
+          {/* 👇 CENTERED HEADER & BUTTON 👇 */}
+          <div className="flex flex-col items-center justify-center text-center mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-3 md:mb-4 tracking-tight">
+              <span className="bg-gradient-to-r from-gofoodie-orange to-gofoodie-yellow bg-clip-text text-transparent">
+                Signature Dishes
+              </span>
+            </h2>
+            <p className="text-stone-500 dark:text-stone-400 text-base md:text-lg font-medium mb-6">Our most loved meals, crafted to perfection.</p>
+            
             <Link to="/menu" className="inline-flex items-center gap-2 bg-white dark:bg-stone-800 text-gofoodie-orange border-2 border-gofoodie-orange/20 px-5 md:px-6 py-2.5 md:py-3 rounded-full font-bold text-base md:text-lg hover:border-gofoodie-orange hover:bg-gofoodie-orange hover:text-white transition-all shadow-sm">
-              View Full Menu <ArrowRight size={18} />
+              View Full Menu
             </Link>
           </div>
           
@@ -181,9 +178,12 @@ const HomePage = () => {
                     <p className="text-stone-500 dark:text-stone-400 text-sm mb-4 md:mb-6 line-clamp-2 flex-grow">{item.description}</p>
                     <div className="flex justify-between items-center mt-auto pt-3 md:pt-4 border-t border-stone-100 dark:border-stone-700">
                       <span className="text-xl md:text-2xl font-black text-gofoodie-orange">{item.price} <span className="text-[10px] md:text-xs font-bold text-stone-400 uppercase">ETB</span></span>
-                      <button onClick={() => addToCart(item)} className="bg-gofoodie-orange/10 text-gofoodie-orange p-2.5 md:p-3 rounded-full hover:bg-gofoodie-orange hover:text-white transition-all duration-300 transform group-hover:rotate-90">
-                        <ArrowRight size={18} />
-                      </button>
+                      <Link 
+                        to={`/food/${item.id}`}
+                        className="bg-gofoodie-orange text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full font-bold text-sm hover:bg-orange-600 transition-all shadow-md"
+                      >
+                        Order Now
+                      </Link>
                     </div>
                   </div>
                 </div>

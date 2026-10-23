@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Plus, Search, Loader2, Utensils } from 'lucide-react';
+import { Link } from 'react-router-dom'; 
+import { Search, Loader2, Utensils } from 'lucide-react'; 
 import { getMenuItems } from '../api/menuApi';
 import type { MenuItem } from '../api/menuApi';
-import { useCartStore } from '../store/useCartStore';
 
 const MenuPage = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -11,8 +11,6 @@ const MenuPage = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  
-  const addToCart = useCartStore((state) => state.addToCart);
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -160,12 +158,12 @@ const MenuPage = () => {
                       {item.price} <span className="text-xs font-bold text-stone-400 uppercase">ETB</span>
                     </span>
                     
-                    <button 
-                      onClick={() => addToCart(item)} 
-                      className="bg-gofoodie-orange/10 text-gofoodie-orange p-3 rounded-full hover:bg-gofoodie-orange hover:text-white transition-all duration-300 transform group-hover:rotate-90 shadow-sm hover:shadow-md"
+                    <Link 
+                      to={`/food/${item.id}`}
+                      className="bg-gofoodie-orange text-white px-5 py-2.5 rounded-full font-bold text-sm hover:bg-orange-600 transition-all shadow-md"
                     >
-                      <Plus size={20} strokeWidth={3} />
-                    </button>
+                      Order Now
+                    </Link>
                   </div>
                 </div>
 

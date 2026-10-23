@@ -27,10 +27,11 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex space-x-8 font-medium">
-            <Link to="/" className="text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange transition-colors">Home</Link>
-            <Link to="/menu" className="text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange transition-colors">Menu</Link>
-            <Link to="/about" className="text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange transition-colors">About</Link>
-            <Link to="/contact" className="text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange transition-colors">Contact</Link>
+            <Link to="/" className="text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange transition-colors font-bold">Home</Link>
+            <Link to="/menu" className="text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange transition-colors font-bold">Menu</Link>
+            <Link to="/about" className="text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange transition-colors font-bold">About</Link>
+            <Link to="/contact" className="text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange transition-colors font-bold">Contact</Link>
+            <Link to="/reserve" className="text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange transition-colors font-bold">reserve</Link>
           </div>
 
           <div className="flex items-center gap-4 md:gap-6">

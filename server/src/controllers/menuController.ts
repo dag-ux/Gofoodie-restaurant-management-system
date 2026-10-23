@@ -76,3 +76,16 @@ export const deleteMenuItem = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to delete menu item' });
   }
 };
+export const getMenuItemById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const item = await prisma.menuItem.findUnique({
+      where: { id: Number(id) },
+      include: { category: true },
+    });
+    if (!item) return res.status(404).json({ error: 'Dish not found' });
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch dish' });
+  }
+};

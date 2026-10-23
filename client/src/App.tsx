@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import CartDrawer from './components/CartDrawer'; // Import the Cart Drawer
+
 import HomePage from './pages/HomePage';
 import MenuPage from './pages/MenuPage';
 import AboutPage from './pages/AboutPage';
@@ -9,21 +11,22 @@ import ContactPage from './pages/ContactPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/LoginPage';
+import FoodDetailsPage from './pages/FoodDetailsPage';
+import ReservationPage from './pages/ReservationPage';
 
-// Admin Imports
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminLayout from './pages/admin/AdminLayout';
 import DashboardPage from './pages/admin/DashboardPage';
 import OrdersPage from './pages/admin/OrdersPage';
-import AdminMenuPage from './pages/admin/AdminMenuPage'; // Import the new Menu Management page
+import AdminMenuPage from './pages/admin/AdminMenuPage';
 
 import { useThemeStore } from './store/useThemeStore';
 import { useAuthStore } from './store/useAuthStore';
 
-// Layout for all public-facing pages (includes Navbar and Footer)
 const PublicLayout = () => (
   <div className="flex flex-col min-h-screen bg-stone-50 dark:bg-stone-950 transition-colors duration-300">
     <Navbar />
+    <CartDrawer />
     <main className="flex-grow">
       <Outlet />
     </main>
@@ -35,10 +38,12 @@ function App() {
   const isDark = useThemeStore((state) => state.isDark);
   const { user } = useAuthStore();
 
-  // Apply dark mode class to the HTML element
   useEffect(() => {
-    if (isDark) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, [isDark]);
 
   return (
@@ -56,6 +61,9 @@ function App() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/staff-login" element={<AdminLoginPage />} />
+            <Route path="/food/:id" element={<FoodDetailsPage />} />
+            <Route path="/reserve" element={<ReservationPage />} />
+
           </Route>
 
           {/* Hidden Admin Routes (Protected) */}

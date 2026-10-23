@@ -95,17 +95,25 @@ model OrderItem {
 }
 
 // 7. RESERVATION TABLE
+
 model Reservation {
-  id              Int      @id @default(autoincrement())
-  reservationTime DateTime
-  partySize       Int
-  status          String   @default("CONFIRMED") 
+  id                Int      @id @default(autoincrement())
+  reservationTime   DateTime
+  partySize         Int
+  status            String   @default("CONFIRMED")
+  
+  // New Guest Details
+  guestName         String
+  guestPhone        String
+  guestEmail        String?
+  specialRequests   String?
+  
+  // userId is now optional (?) because guests don't need an account
+  userId            Int?     
+  user              User?    @relation(fields: [userId], references: [id])
 
-  userId          Int
-  user            User     @relation(fields: [userId], references: [id])
-
-  tableId         Int
-  table           Table    @relation(fields: [tableId], references: [id])
+  tableId           Int
+  table             Table    @relation(fields: [tableId], references: [id])
 }
 
 // 8. PAYMENT TABLE
