@@ -164,11 +164,36 @@ const AdminMenuPage = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // ==========================================
+  // SKELETON LOADING STATE
+  // ==========================================
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-[70vh]">
-        <Loader2 className="animate-spin text-gofoodie-orange mb-4" size={48} />
-        <p className="text-stone-500 font-bold animate-pulse">Loading Menu Management...</p>
+      <div className="animate-pulse pb-12">
+        <div className="flex justify-between items-end mb-8">
+          <div>
+            <div className="h-9 bg-stone-200 dark:bg-stone-800 rounded-lg w-64 mb-3"></div>
+            <div className="h-5 bg-stone-200 dark:bg-stone-800 rounded-lg w-80"></div>
+          </div>
+          <div className="h-10 bg-stone-200 dark:bg-stone-800 rounded-xl w-36"></div>
+        </div>
+        
+        <div className="h-28 bg-stone-200 dark:bg-stone-800 rounded-2xl mb-6"></div>
+        
+        <div className="bg-white dark:bg-stone-900 rounded-3xl border border-stone-200 dark:border-stone-800 overflow-hidden">
+           <div className="h-14 bg-stone-100 dark:bg-stone-800/50 border-b border-stone-200 dark:border-stone-800"></div>
+           {[1, 2, 3, 4, 5].map(i => (
+             <div key={i} className="flex items-center gap-4 p-4 border-b border-stone-100 dark:border-stone-800/50">
+                <div className="w-12 h-12 bg-stone-200 dark:bg-stone-800 rounded-lg"></div>
+                <div className="flex-1">
+                  <div className="h-4 bg-stone-200 dark:bg-stone-800 rounded w-1/3 mb-2"></div>
+                  <div className="h-3 bg-stone-200 dark:bg-stone-800 rounded w-1/2"></div>
+                </div>
+                <div className="h-6 bg-stone-200 dark:bg-stone-800 rounded w-20"></div>
+                <div className="h-8 bg-stone-200 dark:bg-stone-800 rounded w-16"></div>
+             </div>
+           ))}
+        </div>
       </div>
     );
   }
@@ -178,12 +203,12 @@ const AdminMenuPage = () => {
       
       {/* TOAST NOTIFICATION */}
       {toast && (
-        <div className={`fixed top-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border transition-all duration-300 animate-slide-in ${
+        <div className={`fixed top-8 right-8 z-[100] flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-2xl border transition-all duration-300 animate-slide-in ${
           toast.type === 'success' 
             ? 'bg-green-50 border-green-200 text-green-800 dark:bg-green-900/90 dark:border-green-800 dark:text-green-300' 
             : 'bg-red-50 border-red-200 text-red-800 dark:bg-red-900/90 dark:border-red-800 dark:text-red-300'
         }`}>
-          {toast.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
+          {toast.type === 'success' ? <CheckCircle size={18} /> : <AlertCircle size={18} />}
           <span className="font-bold text-sm">{toast.message}</span>
         </div>
       )}
@@ -191,91 +216,100 @@ const AdminMenuPage = () => {
       {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-stone-900 dark:text-white tracking-tight">Menu Management</h1>
-          <p className="text-stone-500 mt-2">Manage your restaurant's dishes and categories.</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-stone-900 dark:text-white tracking-tight mb-2">
+            Menu <span className="bg-gradient-to-r from-gofoodie-orange to-gofoodie-yellow bg-clip-text text-transparent">Management</span>
+          </h1>
+          <p className="text-stone-500 mt-1 text-sm md:text-base">Manage your restaurant's dishes and categories.</p>
         </div>
         <button 
           onClick={openCreateModal}
-          className="bg-gofoodie-orange text-white px-6 py-3 rounded-xl font-bold hover:bg-orange-600 transition-all shadow-lg flex items-center gap-2"
+          className="bg-gradient-to-r from-gofoodie-orange to-gofoodie-yellow text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition-all shadow-md flex items-center gap-2"
         >
-          <Plus size={20} /> Add New Dish
+          <Plus size={18} /> Add New Dish
         </button>
       </div>
 
-      {/* FILTERS & SEARCH */}
-      <div className="bg-white dark:bg-stone-900 p-4 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 mb-6 flex flex-col lg:flex-row gap-4 justify-between items-center">
-        
-        {/* Category Tabs */}
-        <div className="flex gap-2 overflow-x-auto w-full lg:w-auto pb-2 lg:pb-0 hide-scrollbar">
-          <button 
-            onClick={() => setActiveCategory('All')}
-            className={`px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors ${activeCategory === 'All' ? 'bg-gofoodie-orange text-white' : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'}`}
-          >
-            All Items
-          </button>
-          {categories.map(cat => (
-            <button 
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.name)}
-              className={`px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors ${activeCategory === cat.name ? 'bg-gofoodie-orange text-white' : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'}`}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
+      {/* FILTERS & SEARCH (Matching Admin Layout) */}
+      <div className="mb-8">
+          {/* Search Bar - Sleeker and Compact */}
+          <div className="relative w-full max-w-xl mx-auto mb-6">
+            <Search className="absolute left-4 top-3 text-stone-400" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search dishes..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-white dark:bg-stone-800 text-stone-900 dark:text-white shadow-sm transition-all text-sm"
+            />
+          </div>
 
-        {/* Search Bar */}
-        <div className="relative w-full lg:w-72">
-          <Search className="absolute left-3 top-3 text-stone-400" size={20} />
-          <input 
-            type="text" 
-            placeholder="Search dishes..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white transition-all"
-          />
-        </div>
+          {/* Category Pills - Compact and elegant */}
+          <div className="flex flex-wrap justify-center gap-2">
+            <button 
+              onClick={() => setActiveCategory('All')}
+              className={`px-4 py-2 rounded-lg font-bold text-sm transition-all duration-300 ${
+                activeCategory === 'All' 
+                  ? 'bg-gradient-to-r from-gofoodie-orange to-gofoodie-yellow text-white shadow-md transform scale-105' 
+                  : 'bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700 hover:border-gofoodie-orange hover:text-gofoodie-orange'
+              }`}
+            >
+              All Items
+            </button>
+            {categories.map(cat => (
+              <button 
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.name)}
+                className={`px-4 py-2 rounded-lg font-bold text-sm transition-all duration-300 ${
+                  activeCategory === cat.name 
+                    ? 'bg-gradient-to-r from-gofoodie-orange to-gofoodie-yellow text-white shadow-md transform scale-105' 
+                    : 'bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700 hover:border-gofoodie-orange hover:text-gofoodie-orange'
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
       </div>
 
       {/* DATA TABLE */}
       <div className="bg-white dark:bg-stone-900 rounded-3xl shadow-sm border border-stone-200 dark:border-stone-800 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead className="bg-stone-50 dark:bg-stone-800/50 text-stone-500 dark:text-stone-400 text-sm uppercase tracking-wider">
+          <table className="w-full text-left border-collapse min-w-[700px]">
+            <thead className="bg-stone-50 dark:bg-stone-800/50 text-stone-500 dark:text-stone-400 text-xs uppercase tracking-wider">
               <tr>
-                <th className="p-5 font-bold">Dish Details</th>
-                <th className="p-5 font-bold">Category</th>
-                <th className="p-5 font-bold">Price</th>
-                <th className="p-5 font-bold text-right">Actions</th>
+                <th className="p-4 font-bold">Dish Details</th>
+                <th className="p-4 font-bold">Category</th>
+                <th className="p-4 font-bold">Price</th>
+                <th className="p-4 font-bold text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100 dark:divide-stone-800">
               {filteredItems.map((item) => (
                 <tr key={item.id} className="hover:bg-stone-50 dark:hover:bg-stone-800/30 transition-colors group">
-                  <td className="p-5">
-                    <div className="flex items-center gap-4">
-                      <img src={item.imageUrl} alt={item.name} className="w-14 h-14 rounded-xl object-cover border border-stone-200 dark:border-stone-700 shadow-sm" />
+                  <td className="p-4">
+                    <div className="flex items-center gap-3">
+                      <img src={item.imageUrl} alt={item.name} className="w-12 h-12 rounded-lg object-cover border border-stone-200 dark:border-stone-700 shadow-sm" />
                       <div>
-                        <p className="font-bold text-stone-900 dark:text-white text-lg">{item.name}</p>
-                        <p className="text-sm text-stone-500 line-clamp-1 max-w-[250px]">{item.description}</p>
+                        <p className="font-bold text-stone-900 dark:text-white text-base">{item.name}</p>
+                        <p className="text-xs text-stone-500 line-clamp-1 max-w-[200px]">{item.description}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="p-5">
-                    <span className="bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 text-xs font-bold px-3 py-1.5 rounded-lg">
+                  <td className="p-4">
+                    <span className="bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 text-xs font-bold px-2.5 py-1 rounded-md border border-stone-200 dark:border-stone-700">
                       {item.category?.name || 'N/A'}
                     </span>
                   </td>
-                  <td className="p-5">
-                    <span className="text-gofoodie-orange font-extrabold text-lg">{item.price} <span className="text-xs text-stone-500">ETB</span></span>
+                  <td className="p-4">
+                    <span className="text-gofoodie-orange font-black text-base">{item.price} <span className="text-xs text-stone-400 font-bold">ETB</span></span>
                   </td>
-                  <td className="p-5 text-right">
-                    <div className="flex justify-end gap-2 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => openEditModal(item)} className="p-2.5 text-stone-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-colors" title="Edit">
-                        <Edit size={18} />
+                  <td className="p-4 text-right">
+                    <div className="flex justify-end gap-1.5 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => openEditModal(item)} className="p-2 text-stone-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors" title="Edit">
+                        <Edit size={16} />
                       </button>
-                      <button onClick={() => openDeleteModal(item)} className="p-2.5 text-stone-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-colors" title="Delete">
-                        <Trash2 size={18} />
+                      <button onClick={() => openDeleteModal(item)} className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors" title="Delete">
+                        <Trash2 size={16} />
                       </button>
                     </div>
                   </td>
@@ -283,8 +317,12 @@ const AdminMenuPage = () => {
               ))}
               {filteredItems.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="p-10 text-center text-stone-500 font-medium">
-                    No dishes found. Try a different search or category.
+                  <td colSpan={4} className="p-12 text-center">
+                    <div className="flex flex-col items-center justify-center">
+                      <Search size={40} className="text-stone-300 dark:text-stone-700 mb-3" />
+                      <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-1">No dishes found</h3>
+                      <p className="text-sm text-stone-500">Try changing your search or category filter.</p>
+                    </div>
                   </td>
                 </tr>
               )}
@@ -299,30 +337,30 @@ const AdminMenuPage = () => {
           
           {/* CREATE/EDIT MODAL */}
           {modalMode !== 'delete' && (
-            <div className="bg-white dark:bg-stone-900 rounded-3xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto animate-slide-up border border-stone-200 dark:border-stone-700">
-              <div className="flex justify-between items-center p-6 border-b border-stone-100 dark:border-stone-800 sticky top-0 bg-white/95 dark:bg-stone-900/95 backdrop-blur z-10">
-                <h2 className="text-2xl font-extrabold text-stone-900 dark:text-white">
+            <div className="bg-white dark:bg-stone-900 rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up border border-stone-200 dark:border-stone-700">
+              <div className="flex justify-between items-center p-5 border-b border-stone-100 dark:border-stone-800 sticky top-0 bg-white/95 dark:bg-stone-900/95 backdrop-blur z-10">
+                <h2 className="text-xl font-extrabold text-stone-900 dark:text-white">
                   {modalMode === 'edit' ? 'Edit Dish' : 'Add New Dish'}
                 </h2>
-                <button onClick={closeModal} className="p-2 text-stone-400 hover:text-red-500 bg-stone-100 dark:bg-stone-800 rounded-full transition-colors">
-                  <X size={20} />
+                <button onClick={closeModal} className="p-1.5 text-stone-400 hover:text-red-500 bg-stone-100 dark:bg-stone-800 rounded-full transition-colors">
+                  <X size={18} />
                 </button>
               </div>
               
-              <form onSubmit={handleSubmit} className="p-6 space-y-5">
+              <form onSubmit={handleSubmit} className="p-5 space-y-4">
                 <div>
-                  <label className="block text-sm font-bold text-stone-700 dark:text-stone-300 mb-2">Dish Name</label>
-                  <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white transition-all" placeholder="e.g. Doro Wat" />
+                  <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1.5">Dish Name</label>
+                  <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white text-sm transition-all" placeholder="e.g. Doro Wat" />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-bold text-stone-700 dark:text-stone-300 mb-2">Price (ETB)</label>
-                    <input required type="number" name="price" value={formData.price} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white transition-all" placeholder="450" />
+                    <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1.5">Price (ETB)</label>
+                    <input required type="number" name="price" value={formData.price} onChange={handleChange} className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white text-sm transition-all" placeholder="450" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-stone-700 dark:text-stone-300 mb-2">Category</label>
-                    <select required name="categoryId" value={formData.categoryId} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white transition-all">
+                    <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1.5">Category</label>
+                    <select required name="categoryId" value={formData.categoryId} onChange={handleChange} className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white text-sm transition-all">
                       {categories.map(cat => (
                         <option key={cat.id} value={cat.id}>{cat.name}</option>
                       ))}
@@ -331,26 +369,26 @@ const AdminMenuPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-stone-700 dark:text-stone-300 mb-2">Image URL</label>
-                  <input required type="url" name="imageUrl" value={formData.imageUrl} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white transition-all" placeholder="https://images.unsplash.com/..." />
+                  <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1.5">Image URL</label>
+                  <input required type="url" name="imageUrl" value={formData.imageUrl} onChange={handleChange} className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white text-sm transition-all" placeholder="https://images.unsplash.com/..." />
                   {formData.imageUrl && (
-                    <div className="mt-3 w-16 h-16 rounded-lg overflow-hidden border border-stone-200 dark:border-stone-700">
+                    <div className="mt-2 w-16 h-16 rounded-lg overflow-hidden border border-stone-200 dark:border-stone-700 shadow-sm">
                       <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} onLoad={(e) => (e.currentTarget.style.display = 'block')} />
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-stone-700 dark:text-stone-300 mb-2">Description</label>
-                  <textarea required rows={3} name="description" value={formData.description} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white transition-all resize-none" placeholder="Describe the dish..."></textarea>
+                  <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1.5">Description</label>
+                  <textarea required rows={3} name="description" value={formData.description} onChange={handleChange} className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-gofoodie-orange bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white text-sm transition-all resize-none" placeholder="Describe the dish..."></textarea>
                 </div>
 
-                <div className="pt-4 border-t border-stone-100 dark:border-stone-800 flex justify-end gap-3">
-                  <button type="button" onClick={closeModal} className="px-6 py-3 rounded-xl font-bold text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                <div className="pt-3 border-t border-stone-100 dark:border-stone-800 flex justify-end gap-2">
+                  <button type="button" onClick={closeModal} className="px-4 py-2.5 rounded-xl font-bold text-sm text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
                     Cancel
                   </button>
-                  <button type="submit" disabled={isSubmitting} className="bg-gofoodie-orange text-white px-8 py-3 rounded-xl font-bold hover:bg-orange-600 transition-colors shadow-lg flex items-center gap-2 disabled:opacity-50">
-                    {isSubmitting ? <><Loader2 className="animate-spin" size={20} /> Saving...</> : 'Save Dish'}
+                  <button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-gofoodie-orange to-gofoodie-yellow text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-md flex items-center gap-2 disabled:opacity-50">
+                    {isSubmitting ? <><Loader2 className="animate-spin" size={16} /> Saving...</> : 'Save Dish'}
                   </button>
                 </div>
               </form>
@@ -359,20 +397,20 @@ const AdminMenuPage = () => {
 
           {/* DELETE CONFIRMATION MODAL */}
           {modalMode === 'delete' && selectedItem && (
-            <div className="bg-white dark:bg-stone-900 rounded-3xl shadow-2xl w-full max-w-md p-8 text-center animate-slide-up border border-stone-200 dark:border-stone-700">
-              <div className="w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Trash2 size={40} className="text-red-500" />
+            <div className="bg-white dark:bg-stone-900 rounded-3xl shadow-2xl w-full max-w-sm p-6 text-center animate-slide-up border border-stone-200 dark:border-stone-700">
+              <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trash2 size={32} className="text-red-500" />
               </div>
-              <h2 className="text-2xl font-extrabold text-stone-900 dark:text-white mb-2">Delete Dish?</h2>
-              <p className="text-stone-500 mb-8">
+              <h2 className="text-xl font-extrabold text-stone-900 dark:text-white mb-2">Delete Dish?</h2>
+              <p className="text-sm text-stone-500 mb-6">
                 Are you sure you want to delete <strong className="text-stone-900 dark:text-white">{selectedItem.name}</strong>? This action cannot be undone.
               </p>
-              <div className="flex gap-3">
-                <button onClick={closeModal} className="flex-1 px-6 py-3 rounded-xl font-bold text-stone-600 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-stone-700 transition-colors">
+              <div className="flex gap-2">
+                <button onClick={closeModal} className="flex-1 px-4 py-2.5 rounded-xl font-bold text-sm text-stone-600 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-stone-700 transition-colors">
                   Cancel
                 </button>
-                <button onClick={handleDelete} disabled={isSubmitting} className="flex-1 bg-red-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg flex items-center justify-center gap-2 disabled:opacity-50">
-                  {isSubmitting ? <Loader2 className="animate-spin" size={20} /> : 'Yes, Delete'}
+                <button onClick={handleDelete} disabled={isSubmitting} className="flex-1 bg-red-500 text-white px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-red-600 transition-colors shadow-md flex items-center justify-center gap-2 disabled:opacity-50">
+                  {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : 'Yes, Delete'}
                 </button>
               </div>
             </div>

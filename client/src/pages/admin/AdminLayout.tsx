@@ -29,11 +29,12 @@ const AdminLayout = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Upgraded Professional NavLink Classes
   const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
-    `flex items-center gap-3 p-3.5 rounded-xl font-bold transition-all duration-300 ${
+    `group flex items-center justify-between px-4 py-3.5 rounded-2xl font-bold text-[15px] tracking-wide transition-all duration-300 ${
       isActive
-        ? 'bg-gradient-to-r from-gofoodie-orange to-gofoodie-yellow text-white shadow-[0_5px_15px_rgba(255,102,0,0.3)] transform scale-[1.02]'
-        : 'text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-gofoodie-orange'
+        ? 'bg-gradient-to-r from-gofoodie-orange to-gofoodie-yellow text-white shadow-[0_8px_20px_rgba(255,102,0,0.3)]'
+        : 'text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-gofoodie-orange hover:translate-x-1'
     }`;
 
   return (
@@ -52,7 +53,7 @@ const AdminLayout = () => {
         fixed lg:static top-0 left-0 h-full w-72 bg-white/95 dark:bg-stone-900/95 backdrop-blur-xl border-r border-stone-200 dark:border-stone-800 flex flex-col z-50 transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        {/* Sidebar Header: Admin Dashboard with Gradient */}
+        {/* Sidebar Header */}
         <div className="h-20 flex items-center justify-between px-6 border-b border-stone-200 dark:border-stone-800">
           <h2 className="text-xl font-black tracking-tight bg-gradient-to-r from-gofoodie-orange via-gofoodie-yellow to-gofoodie-orange bg-clip-text text-transparent">
             Admin Dashboard
@@ -63,27 +64,55 @@ const AdminLayout = () => {
         </div>
         
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto mt-4">
-          <NavLink to="/admin" end className={navLinkClasses} onClick={() => setIsMobileMenuOpen(false)}>
-            <LayoutDashboard size={20} /> Dashboard
-          </NavLink>
+        <nav className="flex-1 p-4 overflow-y-auto mt-2">
+          <p className="px-4 text-[10px] font-black text-stone-400 uppercase tracking-widest mb-3">Main Menu</p>
           
-          <NavLink to="/admin/orders" className={navLinkClasses} onClick={() => setIsMobileMenuOpen(false)}>
-            <ShoppingCart size={20} /> Live Orders
-          </NavLink>
-          
-          <NavLink to="/admin/menu" className={navLinkClasses} onClick={() => setIsMobileMenuOpen(false)}>
-            <Utensils size={20} /> Manage Menu
-          </NavLink>
+          <div className="space-y-1.5">
+            <NavLink to="/admin" end className={navLinkClasses} onClick={() => setIsMobileMenuOpen(false)}>
+              {({ isActive }) => (
+                <>
+                  <div className="flex items-center gap-3">
+                    <LayoutDashboard size={20} className={`transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} /> 
+                    <span>Dashboard</span>
+                  </div>
+                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white opacity-90 shadow-sm" />}
+                </>
+              )}
+            </NavLink>
+            
+            <NavLink to="/admin/orders" className={navLinkClasses} onClick={() => setIsMobileMenuOpen(false)}>
+              {({ isActive }) => (
+                <>
+                  <div className="flex items-center gap-3">
+                    <ShoppingCart size={20} className={`transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} /> 
+                    <span>Live Orders</span>
+                  </div>
+                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white opacity-90 shadow-sm" />}
+                </>
+              )}
+            </NavLink>
+            
+            <NavLink to="/admin/menu" className={navLinkClasses} onClick={() => setIsMobileMenuOpen(false)}>
+              {({ isActive }) => (
+                <>
+                  <div className="flex items-center gap-3">
+                    <Utensils size={20} className={`transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} /> 
+                    <span>Manage Menu</span>
+                  </div>
+                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white opacity-90 shadow-sm" />}
+                </>
+              )}
+            </NavLink>
+          </div>
         </nav>
         
         {/* Bottom Actions */}
         <div className="p-4 border-t border-stone-200 dark:border-stone-800">
           <button 
             onClick={handleLogout} 
-            className="flex items-center justify-center gap-2 p-3 w-full rounded-xl text-red-500 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 font-bold transition-colors"
+            className="flex items-center justify-center gap-2 p-3.5 w-full rounded-2xl text-red-500 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 font-bold text-[15px] tracking-wide transition-all duration-300 hover:scale-[1.02]"
           >
-            <LogOut size={20} /> Logout
+            <LogOut size={18} /> Logout
           </button>
         </div>
       </aside>
@@ -94,7 +123,7 @@ const AdminLayout = () => {
         {/* TOP NAVBAR */}
         <header className="relative h-20 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 flex items-center justify-between px-4 sm:px-8 z-30">
           
-          {/* LEFT: Mobile Menu Trigger only */}
+          {/* LEFT: Mobile Menu Trigger */}
           <div className="flex items-center gap-4 z-10 w-1/3">
             <button 
               onClick={() => setIsMobileMenuOpen(true)} 
@@ -116,7 +145,6 @@ const AdminLayout = () => {
           {/* RIGHT: Theme, View Site, Profile */}
           <div className="flex items-center justify-end gap-3 sm:gap-4 z-10 w-1/3">
             
-            {/* View Live Site */}
             <Link 
               to="/" 
               target="_blank"
@@ -125,7 +153,6 @@ const AdminLayout = () => {
               <ExternalLink size={16} /> Live Site
             </Link>
 
-            {/* Theme Toggle */}
             <button 
               onClick={toggleTheme} 
               className="p-2 text-stone-600 dark:text-stone-300 hover:text-gofoodie-orange hover:bg-stone-100 dark:hover:bg-stone-800 rounded-full transition-colors"
@@ -148,7 +175,6 @@ const AdminLayout = () => {
               {/* Dropdown Menu */}
               {isProfileOpen && (
                 <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-stone-900 rounded-2xl shadow-2xl border border-stone-100 dark:border-stone-800 overflow-hidden animate-slide-in z-50">
-                  {/* Header */}
                   <div className="p-5 bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-stone-800 dark:to-stone-800/50 border-b border-stone-100 dark:border-stone-800 flex items-center gap-4">
                     <div className="w-12 h-12 bg-white dark:bg-stone-700 rounded-full flex items-center justify-center shadow-sm">
                       <User className="text-gofoodie-orange" size={24} />
@@ -159,7 +185,6 @@ const AdminLayout = () => {
                     </div>
                   </div>
 
-                  {/* Info List */}
                   <div className="p-2">
                     <div className="flex items-center gap-3 px-4 py-3 text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 rounded-xl cursor-default">
                       <Mail size={16} className="text-stone-400" />
@@ -171,7 +196,6 @@ const AdminLayout = () => {
                     </div>
                   </div>
 
-                  {/* Logout Action */}
                   <div className="p-2 border-t border-stone-100 dark:border-stone-800">
                     <button 
                       onClick={handleLogout}
