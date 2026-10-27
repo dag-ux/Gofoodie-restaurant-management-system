@@ -1,4 +1,4 @@
-import { MapPin, Phone, Clock, Mail, Send, Video, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Clock,  Send, Video, ExternalLink } from 'lucide-react';
 
 const ContactPage = () => {
   return (

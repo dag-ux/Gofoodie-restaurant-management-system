@@ -1,6 +1,21 @@
 import { useState, useRef, useEffect } from 'react';
 import { Outlet, NavLink, Link, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingCart, Utensils, LogOut, Menu, X, ExternalLink, User, Sun, Moon, Mail, ShieldAlert } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  ShoppingCart, 
+  Utensils, 
+  LogOut, 
+  Menu, 
+  X, 
+  ExternalLink, 
+  User, 
+  Sun, 
+  Moon, 
+  Mail, 
+  ShieldAlert,
+  Calendar,
+  Grid //  Imported Grid icon for Manage Tables
+} from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useThemeStore } from '../../store/useThemeStore';
 
@@ -29,7 +44,7 @@ const AdminLayout = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Upgraded Professional NavLink Classes
+  // Professional NavLink Classes
   const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
     `group flex items-center justify-between px-4 py-3.5 rounded-2xl font-bold text-[15px] tracking-wide transition-all duration-300 ${
       isActive
@@ -103,6 +118,32 @@ const AdminLayout = () => {
                 </>
               )}
             </NavLink>
+
+            <NavLink to="/admin/reservations" className={navLinkClasses} onClick={() => setIsMobileMenuOpen(false)}>
+              {({ isActive }) => (
+                <>
+                  <div className="flex items-center gap-3">
+                    <Calendar size={20} className={`transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} /> 
+                    <span>Reservations</span>
+                  </div>
+                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white opacity-90 shadow-sm" />}
+                </>
+              )}
+            </NavLink>
+
+            {/*  NEW MANAGE TABLES LINK  */}
+            <NavLink to="/admin/tables" className={navLinkClasses} onClick={() => setIsMobileMenuOpen(false)}>
+              {({ isActive }) => (
+                <>
+                  <div className="flex items-center gap-3">
+                    <Grid size={20} className={`transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} /> 
+                    <span>Manage Tables</span>
+                  </div>
+                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white opacity-90 shadow-sm" />}
+                </>
+              )}
+            </NavLink>
+
           </div>
         </nav>
         

@@ -19,6 +19,9 @@ import AdminLayout from './pages/admin/AdminLayout';
 import DashboardPage from './pages/admin/DashboardPage';
 import OrdersPage from './pages/admin/OrdersPage';
 import AdminMenuPage from './pages/admin/AdminMenuPage';
+import AdminReservationsPage from './pages/admin/AdminReservationsPage';
+import AdminTablesPage from './pages/admin/AdminTablesPage';
+
 
 import { useThemeStore } from './store/useThemeStore';
 import { useAuthStore } from './store/useAuthStore';
@@ -74,6 +77,8 @@ function App() {
             <Route index element={<DashboardPage />} />
             <Route path="orders" element={<OrdersPage />} />
             <Route path="menu" element={<AdminMenuPage />} />
+            <Route path="reservations" element={<AdminReservationsPage />} />
+            <Route path="tables" element={<AdminTablesPage />} />
           </Route>
           
         </Routes>
