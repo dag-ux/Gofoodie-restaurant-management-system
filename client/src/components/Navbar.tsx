@@ -23,10 +23,13 @@ import logoDark from '../assets/logo-dark.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // Zustand stores
   const { getTotalItems } = useCartStore();
   const totalItems = getTotalItems();
   const { user, logout } = useAuthStore();
   const { isDark, toggleTheme } = useThemeStore();
+  
   const navigate = useNavigate();
 
   const handleLogout = () => { 
@@ -75,9 +78,10 @@ const Navbar = () => {
             {/* Desktop User/Login */}
             {user ? (
               <div className="hidden md:flex items-center gap-4">
-                <span className="text-stone-600 dark:text-stone-300 font-bold text-sm flex items-center gap-2">
+                {/* 👇 Profile Link 👇 */}
+                <Link to="/profile" className="text-stone-600 dark:text-stone-300 font-bold text-sm flex items-center gap-2 hover:text-gofoodie-orange transition-colors">
                   <UserIcon size={16} /> {user.name}
-                </span>
+                </Link>
                 <button onClick={handleLogout} className="text-red-400 hover:text-red-500 p-2 transition-colors">
                   <LogOut size={20} />
                 </button>
@@ -99,7 +103,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* 👇 PREMIUM MOBILE MENU DROPDOWN 👇 */}
+      {/* Premium Mobile Menu Dropdown */}
       <div 
         className={`md:hidden absolute top-20 left-0 w-full bg-white/95 dark:bg-black/95 backdrop-blur-xl border-b border-stone-200 dark:border-stone-800 shadow-2xl transition-all duration-300 ease-in-out ${
           isMenuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-4'
@@ -128,15 +132,20 @@ const Navbar = () => {
           <div className="pt-3 mt-2 border-t border-stone-100 dark:border-stone-800">
             {user ? (
               <div className="space-y-2">
-                <div className="flex items-center gap-3 p-3.5 bg-stone-50 dark:bg-stone-900 rounded-xl">
+                {/* 👇 Mobile Profile Link 👇 */}
+                <Link 
+                  to="/profile" 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-3 p-3.5 bg-stone-50 dark:bg-stone-900 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+                >
                   <div className="bg-gofoodie-orange/10 p-2 rounded-full">
                     <UserIcon size={18} className="text-gofoodie-orange" />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-stone-900 dark:text-white">{user.name}</p>
-                    <p className="text-xs text-stone-500">{user.role}</p>
+                    <p className="text-xs text-stone-500">View Profile & Orders</p>
                   </div>
-                </div>
+                </Link>
                 <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 p-3.5 rounded-xl text-red-500 font-bold bg-red-50 dark:bg-red-900/20 hover:bg-red-100 transition-colors">
                   <LogOut size={18} /> Logout
                 </button>

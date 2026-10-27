@@ -8,6 +8,7 @@ const router = Router();
 router.post('/', createOrder);
 
 // Protected Routes (Only Admins can view all orders or change status)
+router.get('/my-orders', protect, getMyOrders);
 router.get('/', protect, adminOnly, getAllOrders);
 router.put('/:id/status', protect, adminOnly, updateOrderStatus);
 

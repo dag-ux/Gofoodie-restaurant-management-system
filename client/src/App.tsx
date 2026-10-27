@@ -13,7 +13,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/LoginPage';
 import FoodDetailsPage from './pages/FoodDetailsPage';
 import ReservationPage from './pages/ReservationPage';
-
+import ProfilePage from './pages/ProfilePage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminLayout from './pages/admin/AdminLayout';
 import DashboardPage from './pages/admin/DashboardPage';
@@ -66,6 +66,7 @@ function App() {
             <Route path="/staff-login" element={<AdminLoginPage />} />
             <Route path="/food/:id" element={<FoodDetailsPage />} />
             <Route path="/reserve" element={<ReservationPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
 
           </Route>
 

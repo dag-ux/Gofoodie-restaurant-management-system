@@ -65,3 +65,28 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to update order status' });
   }
 };
+// 4. GET MY ORDERS (Customer Only)
+export const getMyOrders = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Not authorized to view orders.' });
+    }
+
+    const orders = await prisma.order.findMany({
+      where: { userId },
+      include: {
+        items: {
+          include: { menuItem: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' } // Newest first
+    });
+
+    res.json(orders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch your orders.' });
+  }
+};
