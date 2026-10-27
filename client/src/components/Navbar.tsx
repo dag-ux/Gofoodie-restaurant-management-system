@@ -17,23 +17,29 @@ const Navbar = () => {
 
   const handleLogout = () => { 
     logout(); 
-    setIsMenuOpen(false); // Close menu on logout
+    setIsMenuOpen(false); 
     navigate('/'); 
   };
 
   return (
-    // 👇 Changed dark:bg-stone-900 to dark:bg-black to match logo background
     <nav className="bg-white dark:bg-black shadow-sm sticky top-0 z-50 border-b border-stone-200 dark:border-stone-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
-          {/* Logo */}
+          {/* 👇 FIXED LOGO: Renders both, uses CSS to show the correct one 👇 */}
           <Link to="/" className="flex items-center gap-2 z-50">
-            <img 
-              src={isDark ? logoDark : logoLight} 
-              alt="GoofFoodie" 
-              className="h-12 md:h-14 w-auto object-contain" 
-            />
+            <div className="relative h-12 md:h-14 w-32 md:w-40">
+              <img 
+                src={logoLight} 
+                alt="GoofFoodie" 
+                className="block dark:hidden h-full w-auto object-contain" 
+              />
+              <img 
+                src={logoDark} 
+                alt="GoofFoodie" 
+                className="hidden dark:block h-full w-auto object-contain" 
+              />
+            </div>
           </Link>
 
           {/* Desktop Links */}
@@ -87,7 +93,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* 👇 RESTORED MOBILE MENU DROPDOWN 👇 */}
+      {/* Mobile Menu Dropdown */}
       <div 
         className={`md:hidden absolute top-20 left-0 w-full bg-white dark:bg-black border-b border-stone-200 dark:border-stone-800 shadow-lg transition-all duration-300 ease-in-out ${
           isMenuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-4'
